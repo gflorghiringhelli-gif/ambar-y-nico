@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ámbar & Nicolás · Nuestra Boda</title>
+    
+    <!-- FUENTES EDITORIALES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --green-dark: #3f4200;
+            --green-base: #5D5C00;
+            --green-sage: #e8eae1;
+            --green-muted: #B6B27C;
+            --green-olive: #B5B063;
+            --burgundy-deep: #44121B;
+            --burgundy-medium: #7C3341;
+            --burgundy-dark: #5A1924;
+            --bg-lino: #faf8f5;
+            --text-dark: #2b2625;
+            --text-muted: #665a58;
+            --white: #ffffff;
+            --border-olive: rgba(181, 176, 99, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-lino);
+            color: var(--text-dark);
+            font-family: 'Cormorant Garamond', serif;
+            text-align: center;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* TOAST LUXURY */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--burgundy-deep); color: var(--white); padding: 14px 30px; border-radius: 2px;
+            font-size: 0.8rem; letter-spacing: 2.5px; text-transform: uppercase;
+            box-shadow: 0 15px 35px rgba(68,18,27,0.35); z-index: 9999; opacity: 0; 
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none;
+            border: 1px solid var(--green-olive); display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* INTRO CINEMATOGRÁFICA */
+        #contenedor-principal {
+            position: fixed; inset: 0; z-index: 5000; background: var(--burgundy-deep);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #videoSobre { width: 100%; height: 100%; object-fit: cover; display: none; }
+        #imgSobreEstetica { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; transition: opacity 0.6s ease; }
+        #capa-boton { position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); z-index: 5001; width: 90%; max-width: 320px; }
+        .boton-editorial-inicio {
+            background: rgba(250, 248, 245, 0.95); color: var(--burgundy-deep); padding: 16px 28px; border-radius: 2px;
+            font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; letter-spacing: 3px; font-weight: 600;
+            text-transform: uppercase; box-shadow: 0 12px 30px rgba(0,0,0,0.4); border: 1px solid var(--green-olive);
+            transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .boton-editorial-inicio:hover { background: var(--white); transform: scale(1.02); }
+
+        /* CONTROL FLOTANTE MÚSICA */
+        .music-btn {
+            position: fixed; bottom: 22px; right: 22px; width: 48px; height: 48px;
+            background: var(--burgundy-deep); color: var(--white); border: 1px solid var(--green-olive); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; z-index: 4999; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(68,18,27,0.3); display: none; transition: transform 0.3s;
+        }
+        .music-btn:hover { transform: scale(1.08); }
+
+        /* WRAPPER MOBILE */
+        .editorial-wrapper {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg-lino);
+            position: relative;
+            box-shadow: 0 0 60px rgba(68,18,27,0.08);
+        }
+
+        .oculto { display: none !important; }
+
+        /* TIPOGRAFÍA */
+        .title-script { font-family: 'Pinyon Script', cursive; font-size: clamp(3.2rem, 10vw, 4.2rem); color: var(--burgundy-deep); line-height: 1.15; }
+        .title-editorial { font-size: clamp(1.8rem, 6vw, 2.2rem); font-weight: 600; color: var(--burgundy-deep); letter-spacing: 2.5px; text-transform: uppercase; }
+        .sub-editorial { font-size: clamp(1rem, 3.5vw, 1.15rem); font-style: italic; color: var(--green-base); line-height: 1.6; }
+
+        /* SECCIONES EDITORIALES CON BLOQUES OLIVA OPCIONALES */
+        section { padding: 65px 25px; border-bottom: 1px solid var(--border-olive); position: relative; }
+        section.olive-tint { background: var(--green-sage); border-color: rgba(93,92,0,0.15); }
+
+        /* PORTADA HERO (foto1.png) */
+        .hero-cover {
+            height: 94vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 50px 25px;
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+        }
+        .hero-cover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(68,18,27,0.88) 0%, rgba(68,18,27,0.2) 55%, transparent 85%);
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero-title { font-family: 'Pinyon Script', cursive; font-size: clamp(3.8rem, 12vw, 4.8rem); color: var(--white); text-shadow: 0 4px 15px rgba(0,0,0,0.35); }
+        .hero-date { font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; color: var(--green-olive); margin-top: 10px; font-weight: 600; }
+
+        /* PASE VIP DINÁMICO */
+        .vip-badge {
+            background: var(--white); border: 1px solid var(--green-olive); padding: 16px 22px;
+            margin: -30px 25px 35px 25px; border-radius: 2px; position: relative; z-index: 10;
+            box-shadow: 0 10px 30px rgba(93,92,0,0.1);
+        }
+        .vip-badge span { font-size: 0.7rem; letter-spacing: 2.5px; color: var(--green-base); text-transform: uppercase; display: block; }
+        .vip-badge strong { font-size: 1.35rem; color: var(--burgundy-deep); display: block; margin-top: 4px; font-weight: 600; }
+
+        /* CARRUSEL DE FOTOS (FOTO 1 A 6) */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 15px 5px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+        .carousel-item {
+            flex: 0 0 250px;
+            height: 350px;
+            scroll-snap-align: center;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 14px 35px rgba(68,18,27,0.15);
+            border: 1px solid var(--border-olive);
+            transition: transform 0.4s ease;
+        }
+        .carousel-item:hover { transform: scale(1.015); }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* SAVE THE DATE 3 CÍRCULOS INTERACTIVOS 360° + COUNTDOWN */
+        .circles-grid { display: flex; justify-content: center; gap: 18px; margin: 30px 0; }
+        .circle-btn {
+            width: 74px; height: 74px; border-radius: 50%; border: 1.5px solid var(--green-base);
+            background: var(--white); color: var(--burgundy-deep); font-family: 'Cormorant Garamond', serif;
+            font-weight: 600; font-size: 1.2rem; cursor: pointer; 
+            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s, color 0.4s, border-color 0.4s;
+            box-shadow: 0 8px 25px rgba(93,92,0,0.15);
+        }
+        .circle-btn.revealed { background: var(--burgundy-deep); border-color: var(--green-muted); color: var(--white); transform: rotateY(360deg) scale(1.05); }
+
+        .revealed-date-container { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.8s ease, max-height 0.8s ease; }
+        .revealed-date-container.show-revealed { opacity: 1; max-height: 600px; margin-top: 25px; }
+        .day-text { font-size: 1.5rem; font-weight: 600; color: var(--burgundy-deep); margin: 15px 0 22px 0; letter-spacing: 1.5px; }
+
+        .countdown-grid { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+        .timer-box { 
+            background: var(--white); border: 1px solid var(--border-olive); padding: 14px 10px; 
+            border-radius: 2px; min-width: 74px; box-shadow: 0 8px 20px rgba(68,18,27,0.06); 
+            transition: transform 0.3s;
+        }
+        .timer-box:hover { transform: translateY(-3px); }
+        .timer-box span { font-size: 1.6rem; font-weight: 600; color: var(--burgundy-deep); display: block; }
+        .timer-box small { font-size: 0.65rem; color: var(--green-base); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; display: block; font-weight: 600; }
+
+        /* POLAROID PARA CRONOGRAMA CON MARCO OLIVA SUTIL */
+        .polaroid-grid { display: flex; flex-direction: column; gap: 32px; margin-top: 30px; }
+        .polaroid-card {
+            background: var(--white);
+            padding: 16px 16px 32px 16px;
+            box-shadow: 0 15px 40px rgba(68,18,27,0.1);
+            border: 1px solid var(--green-olive);
+            transform: rotate(-0.8deg);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+            position: relative;
+        }
+        .polaroid-card:nth-child(even) { transform: rotate(1deg); }
+        .polaroid-card:hover { transform: translateY(-4px) rotate(0deg); box-shadow: 0 22px 48px rgba(68,18,27,0.16); }
+        .polaroid-img { width: 100%; height: 220px; object-fit: cover; margin-bottom: 14px; filter: contrast(1.03) sepia(6%); border: 1px solid rgba(0,0,0,0.05); }
+        .polaroid-time { font-size: 1.15rem; font-weight: 600; color: var(--green-base); letter-spacing: 1.5px; text-transform: uppercase; }
+        .polaroid-label { font-size: 1.1rem; color: var(--burgundy-deep); margin-top: 4px; font-weight: 600; }
+
+        /* UBICACIONES SUELTAS FUERA DE CAJAS */
+        .location-clean { margin: 30px 0; }
+        .location-icon { width: 50px; height: 50px; background: var(--green-sage); border: 1.5px solid var(--green-olive); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto; color: var(--green-base); font-size: 1.2rem; }
+        
+        .btn-editorial {
+            display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; background: var(--burgundy-deep); color: var(--white);
+            text-decoration: none; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;
+            border-radius: 2px; transition: all 0.3s; margin: 4px; border: 1px solid var(--green-olive);
+            font-weight: 600;
+        }
+        .btn-editorial:hover { background: var(--burgundy-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(68,18,27,0.25); }
+        .btn-editorial.olive { background: var(--green-base); border-color: var(--green-muted); color: var(--white); }
+        .btn-editorial.olive:hover { background: var(--green-dark); }
+
+        /* ACORDEÓN FAQ EDITORIAL PRO */
+        .faq-editorial { text-align: left; margin-top: 25px; }
+        .faq-item-clean { border-bottom: 1px solid var(--border-olive); padding: 18px 0; cursor: pointer; transition: background 0.3s; }
+        .faq-question-clean { display: flex; justify-content: space-between; align-items: center; font-size: 1.15rem; font-weight: 600; color: var(--burgundy-deep); }
+        .faq-question-clean i { font-size: 0.75rem; color: var(--green-base); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+        .faq-answer-clean { max-height: 0; overflow: hidden; opacity: 0; font-size: 0.98rem; color: var(--text-muted); line-height: 1.6; transition: all 0.45s ease-in-out; }
+        .faq-item-clean.active .faq-answer-clean { max-height: 200px; opacity: 1; margin-top: 10px; }
+        .faq-item-clean.active .faq-question-clean i { transform: rotate(180deg); color: var(--burgundy-deep); }
+
+        /* SUGERENCIA DE REGALO REDISEÑADA LUXURY OLIVA */
+        .gift-card-luxury {
+            background: var(--white); border: 1.5px solid var(--green-olive); border-radius: 2px;
+            padding: 35px 24px; margin-top: 28px; box-shadow: 0 15px 40px rgba(93,92,0,0.1);
+            text-align: left; position: relative; background-image: radial-gradient(circle at top right, rgba(181,176,99,0.15), transparent 70%);
+        }
+        .gift-tag-top {
+            position: absolute; top: -11px; left: 24px; background: var(--green-sage); border: 1px solid var(--green-olive);
+            padding: 2px 12px; font-size: 0.7rem; color: var(--green-dark); letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+        }
+
+        /* DOTS DRESS CODE CON ARO OLIVA */
+        .palette-dots { display: flex; justify-content: center; gap: 14px; margin-top: 18px; }
+        .dot { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--green-olive); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+
+        /* CIERRE ROMÁNTICO */
+        .closing-section {
+            background: linear-gradient(to bottom, var(--green-sage), rgba(250, 248, 245, 0));
+            padding: 75px 25px 55px 25px; border-bottom: none;
+        }
+        .closing-script { font-family: 'Pinyon Script', cursive; font-size: clamp(3.2rem, 10vw, 4rem); color: var(--burgundy-deep); line-height: 1.1; }
+
+        footer { padding: 35px 20px; font-size: 0.72rem; letter-spacing: 3.5px; color: var(--burgundy-deep); text-transform: uppercase; opacity: 0.85; }
+
+        /* ANIMACIONES REVEAL SCROLL */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO DE FONDO -->
+    <audio id="musicaInvitacion" preload="auto" loop>
+        <source src="img/musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-toggle" class="music-btn" onclick="toggleMusic()" title="Pausar/Reproducir música"><i class="fa-solid fa-music"></i></div>
+    <div id="toast" class="toast"><i class="fa-solid fa-check-circle" style="color:var(--green-olive);"></i> Alias copiado al portapapeles</div>
+
+    <!-- INTRO INTERACTIVA CON SOBRE.PNG & VIDEO 1.MP4 -->
+    <div id="contenedor-principal" onclick="activarInvitacion()">
+        <video id="videoSobre" playsinline muted preload="auto">
+            <source src="img/1.mp4" type="video/mp4">
+        </video>
+        <img src="img/sobre.png" alt="Sobre Burdeos" id="imgSobreEstetica">
+        <div id="capa-boton">
+            <div class="boton-editorial-inicio" id="btn-toca-abrir"><i class="fa-solid fa-envelope-open-text"></i> Tocar para abrir</div>
+        </div>
+    </div>
+
+    <!-- WRAPPER PRINCIPAL -->
+    <div class="editorial-wrapper">
+        <div id="seccion-final" class="oculto">
+
+            <!-- 1. PORTADA USANDO foto1.png -->
+            <header class="hero-cover" style="background-image: url('img/foto1.png');">
+                <div class="hero-content">
+                    <h1 class="hero-title">Ámbar & Nicolás</h1>
+            </header>
+
+            <!-- PASE VIP DINÁMICO (SI URL TIENE ?para=...) -->
+            <div id="bloque-vip" class="vip-badge oculto reveal">
+                <span><i class="fa-solid fa-certificate" style="margin-right:4px;"></i> Pase Exclusivo / Invitado VIP</span>
+                <strong id="nombre-invitado-vip">Invitado Especial</strong>
+            </div>
+
+            <!-- 2. PRESENTACIÓN EDITORIAL (LETRAS GRANDES + NOMBRES DE NOVIOS EN PINYON) -->
+<section class="reveal">
+    <p class="sub-editorial" style="font-size: 1.15rem; margin-bottom: 24px;">El amor nos unió y nuestras familias acompañaron cada paso del camino.</p>
+    
+    <div style="width: 45px; height: 1.5px; background: var(--green-olive); margin: 0 auto 24px auto;"></div>
+    
+    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: var(--green-dark); letter-spacing: 3px; text-transform: uppercase;">
+        <i class="fa-solid fa-seedling" style="font-size:0.85rem; margin-right:6px; color:var(--green-olive);"></i> Junto a nuestros padres
+    </h3>
+    
+    <div style="margin: 28px 0; font-size: 1.08rem; line-height: 2; border-left: 2px solid var(--green-olive); padding-left: 20px; display: inline-block; text-align: left;">
+        <p style="color: var(--burgundy-deep); font-weight: 600; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;">Padres de laNovia</p>
+        <p style="color: var(--text-dark); font-weight: 500;">María Eugenia López & Jorge Alberto Rodríguez</p>
+        <p style="color: var(--burgundy-deep); font-weight: 600; font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 16px;">Padres del Novio</p>
+        <p style="color: var(--text-dark); font-weight: 500;">Patricia Beatriz Martínez & Carlos Miguel Benítez</p>
+    </div>
+    
+    <div style="width: 45px; height: 1.5px; background: var(--green-olive); margin: 24px auto 0 auto;"></div>
+    
+    <p class="sub-editorial mt-25" style="font-size: 1.18rem; margin-top: 24px;">Nos encantaría compartir este momento tan especial con vos.</p>
+
+    <!-- NOMBRES Y APELLIDOS DE LOS NOVIOS EN PINYON SCRIPT AL FINAL DEL BLOQUE -->
+    <div style="margin-top: 32px; padding-top: 22px; border-top: 1.5px dashed var(--border-olive);">
+        <p style="font-family: 'Pinyon Script', cursive; font-size: 2.7rem; color: var(--burgundy-deep); line-height: 1.2;">
+            Ámbar Rodríguez & Nicolás Benítez
+        </p>
+    </div>
+</section>
+
+            <!-- 3. SAVE THE DATE CON TOCA, TOCA, TOCA -->
+<section class="reveal olive-tint">
+    <h2 class="title-editorial" style="font-size: 1.65rem;">Save the Date</h2>
+    <p class="sub-editorial" style="margin-top: 10px; font-size: 1rem;">Toca los 3 círculos botánicos para revelar la fecha:</p>
+    
+    <div class="circles-grid">
+        <button type="button" class="circle-btn" style="font-size: 0.85rem; line-height: 1.1;" onclick="revealDate(this, '16')">toca<br><span style="font-size:0.6rem;">1/3</span></button>
+        <button type="button" class="circle-btn" style="font-size: 0.85rem; line-height: 1.1;" onclick="revealDate(this, 'ENE')">toca<br><span style="font-size:0.6rem;">2/3</span></button>
+        <button type="button" class="circle-btn" style="font-size: 0.85rem; line-height: 1.1;" onclick="revealDate(this, '2027')">toca<br><span style="font-size:0.6rem;">3/3</span></button>
+    </div>
+    
+    <div id="revealed-date-msg" class="revealed-date-container">
+        <p class="day-text">Sábado 16 de enero de 2027</p>
+        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Ambari+%26+Nicolas&dates=20270116T203000Z/20270117T060000Z" target="_blank" class="btn-editorial olive" style="font-size:0.75rem; padding: 11px 24px;"><i class="fa-regular fa-calendar-plus"></i> Google Calendar</a>
+        
+        <div class="countdown-grid mt-25">
+            <div class="timer-box"><span id="days">00</span><small>Días</small></div>
+            <div class="timer-box"><span id="hours">00</span><small>Horas</small></div>
+            <div class="timer-box"><span id="minutes">00</span><small>Min</small></div>
+            <div class="timer-box"><span id="seconds">00</span><small>Seg</small></div>
+        </div>
+    </div>
+</section>
+
+            <!-- 4. CARRUSEL DE FOTOS (FOTO 1 A 6) -->
+            <section class="reveal">
+                <h2 class="title-editorial" style="font-size: 1.6rem; margin-bottom: 24px;">Nuestra Historia</h2>
+                <div class="carousel-container">
+                    <div class="carousel-item"><img src="img/foto1.png" alt="Foto 1"></div>
+                    <div class="carousel-item"><img src="img/foto2.png" alt="Foto 2"></div>
+                    <div class="carousel-item"><img src="img/foto3.png" alt="Foto 3"></div>
+                    <div class="carousel-item"><img src="img/foto4.png" alt="Foto 4"></div>
+                    <div class="carousel-item"><img src="img/foto5.png" alt="Foto 5"></div>
+                    <div class="carousel-item"><img src="img/foto6.png" alt="Foto 6"></div>
+                </div>
+            </section>
+
+            <!-- 5. UBICACIONES FUERA DEL CRONOGRAMA -->
+            <section class="reveal">
+                <h2 class="title-editorial" style="font-size: 1.6rem;">Ubicaciones</h2>
+                
+                <div class="location-clean" style="margin-top: 30px;">
+                    <div class="location-icon"><i class="fa-solid fa-church"></i></div>
+                    <h3 style="color: var(--burgundy-deep); font-size: 1.35rem; font-weight: 600;">Ceremonia Religiosa</h3>
+                    <p style="font-size: 1.1rem; color: var(--green-base); font-weight: 600; margin: 2px 0 6px 0;">17:30 h</p>
+                    <p style="color: var(--text-dark); margin-bottom: 16px;">Parroquia Santa María de la Asunción</p>
+                    <a href="https://maps.app.goo.gl" target="_blank" class="btn-editorial"><i class="fa-solid fa-map-location-dot"></i> Google Maps</a>
+                    <a href="https://waze.com/ul" target="_blank" class="btn-editorial olive"><i class="fa-brands fa-waze"></i> Waze</a>
+                </div>
+                
+                <div class="location-clean" style="margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--border-olive);">
+                    <div class="location-icon"><i class="fa-solid fa-glass-cheers"></i></div>
+                    <h3 style="color: var(--burgundy-deep); font-size: 1.35rem; font-weight: 600;">Recepción & Fiesta</h3>
+                    <p style="font-size: 1.1rem; color: var(--green-base); font-weight: 600; margin: 2px 0 6px 0;">20:00 h</p>
+                    <p style="color: var(--text-dark); margin-bottom: 16px;">Casa del Lago — Salón Principal</p>
+                    <a href="https://maps.app.goo.gl" target="_blank" class="btn-editorial"><i class="fa-solid fa-map-location-dot"></i> Google Maps</a>
+                    <a href="https://waze.com/ul" target="_blank" class="btn-editorial olive"><i class="fa-brands fa-waze"></i> Waze</a>
+                </div>
+            </section>
+
+            <!-- 6. CRONOGRAMA EN POLAROIDS -->
+            <section class="reveal olive-tint">
+                <h2 class="title-editorial" style="font-size: 1.6rem;">Cronograma</h2>
+                <div class="polaroid-grid">
+                    <div class="polaroid-card">
+                        <img src="img/foto2.png" class="polaroid-img" alt="Ceremonia">
+                        <div class="polaroid-time">17:30 hs</div>
+                        <div class="polaroid-label">Ceremonia religiosa</div>
+                    </div>
+                    <div class="polaroid-card">
+                        <img src="img/foto3.png" class="polaroid-img" alt="Recepción">
+                        <div class="polaroid-time">20:00 hs</div>
+                        <div class="polaroid-label">Recepción de invitados</div>
+                    </div>
+                    <div class="polaroid-card">
+                        <img src="img/foto4.png" class="polaroid-img" alt="Civil">
+                        <div class="polaroid-time">21:00 hs</div>
+                        <div class="polaroid-label">Ceremonia civil</div>
+                    </div>
+                    <div class="polaroid-card">
+                        <img src="img/foto5.png" class="polaroid-img" alt="Cena">
+                        <div class="polaroid-time">21:30 hs</div>
+                        <div class="polaroid-label">Cena & celebración</div>
+                    </div>
+                    <div class="polaroid-card">
+                        <img src="img/foto6.png" class="polaroid-img" alt="Fiesta">
+                        <div class="polaroid-time">23:00 h</div>
+                        <div class="polaroid-label">¡Comienza la fiesta!</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. DRESS CODE (BORDÓS Y VERDES / EVITAR BLANCO, CHAMPÁN, BEIGE) -->
+            <section class="reveal">
+                <h2 class="title-editorial" style="font-size: 1.6rem;">Dress Code</h2>
+                <p style="font-size: 1.35rem; letter-spacing: 2.5px; color: var(--burgundy-deep); margin-top: 10px; font-weight: 600;">ELEGANTE</p>
+                <p style="font-size: 0.98rem; color: var(--text-muted); margin-top: 8px;">Gama sugerida: <strong>bordós y verdes</strong>.</p>
+                <p style="font-size: 0.93rem; color: var(--burgundy-deep); margin-top: 4px; font-style: italic;">Por favor, evitar tonos: <strong>blanco, champán y beige</strong>.</p>
+                <div class="palette-dots">
+                    <span class="dot" style="background:#5A1924;" title="Bordo Profundo"></span>
+                    <span class="dot" style="background:#7C3341;" title="Bordo Muted"></span>
+                    <span class="dot" style="background:#5D5C00;" title="Verde Oliva"></span>
+                    <span class="dot" style="background:#B6B27C;" title="Verde Salvia"></span>
+                </div>
+            </section>
+
+            <!-- 8. PREGUNTAS FRECUENTES INTERACTIVAS PRO -->
+            <section class="reveal">
+                <h2 class="title-editorial" style="font-size: 1.6rem;">Preguntas Frecuentes</h2>
+                <div class="faq-editorial">
+                    <div class="faq-item-clean">
+                        <div class="faq-question-clean"><span><i class="fa-solid fa-circle-question" style="margin-right:8px; color:var(--green-base);"></i> ¿Puedo asistir con niños?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer-clean">No. Hemos decidido que nuestra celebración sea exclusivamente para adultos. Agradecemos muchísimo su comprensión y cariño.</div>
+                    </div>
+                    <div class="faq-item-clean">
+                        <div class="faq-question-clean"><span><i class="fa-solid fa-clock" style="margin-right:8px; color:var(--green-base);"></i> ¿A qué hora debería llegar?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer-clean">Les recomendamos llegar con 15–20 minutos de anticipación a la ceremonia religiosa en la parroquia.</div>
+                    </div>
+                    <div class="faq-item-clean">
+                        <div class="faq-question-clean"><span><i class="fa-solid fa-user-group" style="margin-right:8px; color:var(--green-base);"></i> ¿Puedo llevar acompañante?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer-clean">La invitación es válida únicamente para las personas indicadas en la misma. Si tenés alguna duda, podés consultarnos.</div>
+                    </div>
+                    <div class="faq-item-clean">
+                        <div class="faq-question-clean"><span><i class="fa-solid fa-car" style="margin-right:8px; color:var(--green-base);"></i> ¿Hay estacionamiento?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer-clean">Sí, la recepción en Casa del Lago cuenta con estacionamiento privado para invitados.</div>
+                    </div>
+                    <div class="faq-item-clean">
+                        <div class="faq-question-clean"><span><i class="fa-solid fa-utensils" style="margin-right:8px; color:var(--green-base);"></i> ¿Restricción alimentaria?</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer-clean">Por favor, indicala al momento de confirmar tu asistencia en WhatsApp para tenerla en cuenta con el catering.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. SUGERENCIA DE REGALO REDISEÑADA LUXURY OLIVA -->
+            <section class="reveal olive-tint">
+                <div style="display:inline-block; padding: 6px 18px; background: var(--green-base); color: var(--white); border-radius: 2px; font-size: 0.72rem; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 14px; font-weight: 600;">Detalle con amor</div>
+                <h2 class="title-editorial" style="font-size: 1.75rem;">Sugerencia de Regalo</h2>
+                <p style="font-style: italic; color: var(--green-dark); margin-top: 10px; font-size: 1.05rem;">Lo más importante para nosotros es compartir este día con ustedes.</p>
+                
+                <div class="gift-card-luxury">
+                    <div class="gift-tag-top"><i class="fa-solid fa-vault" style="margin-right:4px;"></i> Transferencia / Alias</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px;">Alias Bancario</p>
+                            <p style="font-size: 1.4rem; font-weight: 600; color: var(--burgundy-deep); letter-spacing: 1.5px; margin-top: 4px;" id="alias-text">1234567</p>
+                        </div>
+                        <button onclick="copiarAlias()" class="btn-editorial olive" style="margin:0; padding:11px 20px;"><i class="fa-regular fa-copy"></i> Copiar</button>
+                    </div>
+                    <div style="margin-top: 20px; padding-top: 14px; border-top: 1px dashed var(--green-olive);">
+                        <p style="font-size: 0.88rem; color: var(--text-muted);">Titular: <strong style="color: var(--text-dark);">Ámbar Valentina Rodríguez</strong></p>
+                    </div>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--green-dark); margin-top: 22px; font-style: italic;"><i class="fa-solid fa-gift" style="margin-right:6px;"></i> También pueden dejar un sobre físico el día de la celebración.</p>
+            </section>
+
+            <!-- 10. RSVP -->
+            <section class="reveal">
+                <h2 class="title-editorial" style="font-size: 1.6rem;">RSVP</h2>
+                <p style="margin: 12px 0 24px 0; font-size: 1.05rem;">Por favor, confirmá tu asistencia antes del <strong style="color:var(--burgundy-deep);">10 de enero de 2027</strong></p>
+                <a href="https://wa.me/595983436971?text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Ámbar%20y%20Nicolás%20✨" class="btn-editorial olive" style="padding: 16px 38px; font-size: 0.9rem;" target="_blank"><i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Confirmar Asistencia</a>
+            </section>
+
+            <!-- 11. CIERRE ROMÁNTICO / DESPEDIDA -->
+            <section class="closing-section reveal">
+                <div style="font-family:'Cormorant Garamond',serif; font-size:0.8rem; letter-spacing:3px; color:var(--green-base); text-transform:uppercase; margin-bottom:12px;">Con profundo amor</div>
+                <div class="closing-script">¡Les esperamos!</div>
+                <p style="font-style: italic; color: var(--green-dark); font-size: 1.15rem; margin-top: 10px;">con cariño</p>
+                <div style="font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; font-weight: 600; color: var(--burgundy-deep); letter-spacing: 2.5px; margin-top: 12px;">
+                    Ámbar & Nicolás <i class="fa-solid fa-heart" style="font-size:1.1rem; color:var(--green-base); margin-left:4px;"></i>
+                </div>
+                <div style="margin-top: 32px; display: flex; justify-content: center; gap: 15px; opacity: 0.85; align-items:center;">
+                    <div style="height:1px; width:40px; background:var(--green-olive);"></div>
+                    <span style="font-size: 0.72rem; color: var(--green-base); letter-spacing: 3.5px; text-transform: uppercase;">16 · 01 · 2027 · Asunción</span>
+                    <div style="height:1px; width:40px; background:var(--green-olive);"></div>
+                </div>
+            </section>
+
+            <footer>✦ Ghisa Digital · tel: 0981 228 720 ✦</footer>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT PRO -->
+    <script>
+        let revealedCount = 0;
+        let yaAbrio = false;
+
+        // Detectar invitado VIP ?para=Familia+Perez
+        function cargarVIP() {
+            const params = new URLSearchParams(window.location.search);
+            const para = params.get('para');
+            if (para) {
+                const badge = document.getElementById('bloque-vip');
+                const nameEl = document.getElementById('nombre-invitado-vip');
+                if (badge && nameEl) {
+                    nameEl.innerText = para.replace(/\+/g, ' ');
+                    badge.classList.remove('oculto');
+                }
+            }
+        }
+
+        function activarInvitacion() {
+            if (yaAbrio) return;
+            yaAbrio = true;
+
+            const imgSobre = document.getElementById('imgSobreEstetica');
+            const videoSobre = document.getElementById('videoSobre');
+            const intro = document.getElementById('contenedor-principal');
+            const btnTexto = document.getElementById('btn-toca-abrir');
+            const musica = document.getElementById('musicaInvitacion');
+            const musicIcon = document.getElementById('music-toggle');
+
+            if (btnTexto) { btnTexto.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Abriendo...'; btnTexto.style.opacity = "0.7"; }
+            if (musica) { musica.currentTime = 0; musica.play().catch(e => console.log("Audio play err:", e)); }
+            if (musicIcon) musicIcon.style.display = 'flex';
+            if (imgSobre) imgSobre.style.opacity = '0';
+
+            if (videoSobre) {
+                videoSobre.style.display = 'block';
+                videoSobre.currentTime = 0;
+                let playPromise = videoSobre.play();
+                const finish = () => transitionToMain(intro);
+                if (playPromise !== undefined) {
+                    playPromise.then(() => { videoSobre.onended = finish; }).catch(finish);
+                } else { videoSobre.onended = finish; }
+                setTimeout(finish, 3800);
+            } else { transitionToMain(intro); }
+        }
+
+        function transitionToMain(intro) {
+            if (intro) { intro.style.opacity = '0'; }
+            setTimeout(() => {
+                if (intro) intro.style.display = 'none';
+                const finalSec = document.getElementById('seccion-final');
+                if (finalSec) finalSec.classList.remove('oculto');
+                window.scrollTo(0, 0);
+                cargarVIP();
+                iniciarScrollAnimations();
+                setInterval(actualizarContador, 1000);
+                actualizarContador();
+            }, 850);
+        }
+
+        function toggleMusic() {
+            const m = document.getElementById('musicaInvitacion');
+            const ic = document.getElementById('music-toggle');
+            if (!m || !ic) return;
+            if (m.paused) { m.play(); ic.innerHTML = '<i class="fa-solid fa-music"></i>'; }
+            else { m.pause(); ic.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>'; }
+        }
+
+        function iniciarScrollAnimations() {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        }
+
+        function revealDate(btn, text) {
+            if (!btn.classList.contains('revealed')) {
+                btn.innerText = text;
+                btn.classList.add('revealed');
+                revealedCount++;
+                if (revealedCount === 3) {
+                    const msg = document.getElementById('revealed-date-msg');
+                    if (msg) msg.classList.add('show-revealed');
+                }
+            }
+        }
+
+        function actualizarContador() {
+            const meta = new Date("2027-01-16T20:30:00").getTime();
+            const dif = meta - new Date().getTime();
+            if (dif > 0) {
+                document.getElementById('days').innerText = Math.floor(dif / 86400000).toString().padStart(2, '0');
+                document.getElementById('hours').innerText = Math.floor((dif % 86400000) / 3600000).toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = Math.floor((dif % 3600000) / 60000).toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = Math.floor((dif % 60000) / 1000).toString().padStart(2, '0');
+            }
+        }
+
+        // Acordeón FAQ suave
+        document.querySelectorAll('.faq-item-clean').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        function copiarAlias() {
+            const alias = document.getElementById('alias-text').innerText;
+            navigator.clipboard.writeText(alias).then(() => {
+                const t = document.getElementById('toast');
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 2800);
+            });
+        }
+    </script>
+</body>
+</html>
